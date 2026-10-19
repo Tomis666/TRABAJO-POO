@@ -1,0 +1,111 @@
+CREATE DATABASE secuencia;
+
+USE secuencia;
+
+
+CREATE TABLE t_usuario
+(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50),
+    email VARCHAR(1000)
+);
+
+
+
+INSERT INTO t_usuario
+(nombre,email)
+VALUES
+("Fernando Perez","fp@email.com"),
+("Antonieta Garcia","ag@email.com");
+
+
+
+
+
+-- Secuencia con valor inicial personalizado
+CREATE TABLE t_producto
+(
+    codigo INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100),
+    precio DECIMAL(10,2)
+) AUTO_INCREMENT = 1000;
+ 
+
+INSERT INTO t_producto
+(nombre,precio)
+VALUES
+("Notebook",890000.00),
+("Mouse",14990.00);
+
+-- USAR AUTO_INCREMENT  en la definicion de las claves primarias es la forma mas eficiente y mas segura de declarar
+
+
+-- CREACION DE INDICES NO UNICOS
+-- En la base de datos  SQL la eficiencia en la recuperacion de datos es funcdamental , los indices no unicos permiten valores duplicados . su funcion es acelerar las consultas SELECT
+
+DROP TABLE IF EXISTS t_empleado;
+CREATE TABLE t_empleado
+(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(100),
+    email VARCHAR(1000),
+    apellido VARCHAR(100),
+    departamento VARCHAR(50),
+    fecha_contratacion DATE
+);
+
+--La creacion de un indice no unico seria...
+
+CREATE INDEX i_apellido ON t_empleado ON t_empleado(apellido);
+
+--Observacion
+
+-- SHOW INDEX: informacion sobre los indices de una tabla 
+SHOW INDEX FROM t_empleado;
+
+DROP TABLE IF EXISTS t_producto;
+CREATE TABLE t_producto
+(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(255),
+    categoria VARCHAR(100),
+    precio INT,
+    stock INT,    
+);
+
+-- Supuesto frecuentemente buscamos productos por categoria
+
+SELECT * FROM t_producto WHERE categoria = 'Congelados';
+
+--Para optimizarla, creamos un indice no unico en la columna categoria...
+
+CREATE INDEX i_categoria ON t_producto(categoria);
+SHOW INDEX FROM t_producto;
+
+--Cuandi se ejecute el SELECT.SQL usara el indice i_categoria para acelerar la busqueda de Congelados
+
+--Ejemplo
+
+CREATE TABLE t_cliente
+(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(100),
+    ciudad VARCHAR(100),
+    fecha_registro DATE
+);
+
+--Ejecute el siguente script:
+11.insert 100 registros into t_cliente.sql
+
+SHOW INDEX FROM t_cliente;
+
+CREATE INDEX i_ciudad ON t_cliente(ciudad);
+
+SHOW INDEX FROM t_cliente;
+
+--Eliminacion de un indice
+DROP INDEX nombre_indice ON nombre_tabla;
+
+--Ejemplo
+
+DROP INDEX i_ciudad ON t_cliente;
